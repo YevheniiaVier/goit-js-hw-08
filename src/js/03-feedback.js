@@ -1,6 +1,6 @@
 import throttle from 'lodash.throttle';
 
-const FORM_KEY = 'feedback-form-state';
+const STORAGE_KEY = 'feedback-form-state';
 const formData = {};
 
 const refs = {
@@ -16,33 +16,34 @@ updateOutput();
 
 function onInputChange(e) {
   formData[e.target.name] = e.target.value;
-  localStorage.setItem(FORM_KEY, JSON.stringify(formData));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
 function onFormSubmit(e) {
   e.preventDefault();
   e.currentTarget.reset();
-  localStorage.removeItem(FORM_KEY);
+  localStorage.removeItem(STORAGE_KEY);
   console.log(formData);
 }
 
-// function updateOutput() {
+function updateOutput() {
+  const savedData = localStorage.getItem(STORAGE_KEY);
+  const parsedSavedData = JSON.parse(savedData);
+  console.log(parsedSavedData);
+  //   if (parsedSavedData) {
+  //     refs.input.value = parsedSavedData.email || '';
+  //     refs.textarea.value = parsedSavedData.message || '';
+  //   }
+}
 
-//     const savedData = JSON.parse(localStorage.getItem(FORM_KEY));
+// function updateOutput() {
+//   try {
+//     const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
 //     if (savedData) {
 //       refs.input.value = savedData.email || '';
 //       refs.textarea.value = savedData.message || '';
-
+//     }
+//   } catch (error) {
+//     console.error('Get state error: ', error.message);
+//   }
 // }
-
-function updateOutput() {
-  try {
-    const savedData = JSON.parse(localStorage.getItem(FORM_KEY));
-    if (savedData) {
-      refs.input.value = savedData.email || '';
-      refs.textarea.value = savedData.message || '';
-    }
-  } catch (error) {
-    console.error('Get state error: ', error.message);
-  }
-}
